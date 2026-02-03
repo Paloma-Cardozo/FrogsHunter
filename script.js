@@ -155,7 +155,10 @@ let secondCard = null;
 function startGame(numberOfPairs) {
   gameBoard.innerHTML = "";
 
-  const selectedCards = availableCards.slice(0, numberOfPairs);
+  const shuffleCards = shuffleArray([...availableCards]);
+
+  const selectedCards = shuffleCards.slice(0, numberOfPairs);
+
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
