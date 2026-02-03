@@ -111,11 +111,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 15px;
 }
 
 .flip-card-front {
   background-color: #f8ffc9;
-  border-radius: 15px;
 }
 
 .flip-card-back {
@@ -138,40 +138,11 @@ body {
   height: 50px;
 }
 
-.frog1 {
-  background-color: #ee76f8;
-  border-radius: 15px;
-}
-
-.frog2 {
-  background-color: #3a93f9;
-  border-radius: 15px;
-}
-
-.frog3 {
-  background-color: #f2ba49;
-  border-radius: 15px;
-}
-
-.frog4 {
-  background-color: #5dcd5d;
-  border-radius: 15px;
-}
-
-.frog5 {
-  background-color: #db7866;
-  border-radius: 15px;
-}
-
-.frog6 {
-  background-color: #9566db;
-  border-radius: 15px;
-}
-
 .winner {
   margin-bottom: 20px;
   text-align: center;
   font-size: 40px;
   font-weight: 700;
   color: #127439;
+  display: none;
 }
