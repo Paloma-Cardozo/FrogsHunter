@@ -259,15 +259,23 @@ function resetBoard() {
   [firstCard, secondCard] = [null, null];
 }
 
+function formatTime(totalSeconds) {
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `Time: ${mins}min ${secs}s`;
+}
+
 function startTimer() {
+  if (timerInterval) return;
   timerInterval = setInterval(() => {
     elapsedTime++;
-    document.querySelector(".timer").textContent = `Time: ${elapsedTime}s`;
+    document.querySelector(".timer").textContent = formatTime(elapsedTime);
   }, 1000);
 }
 
 function stopTimer() {
   clearInterval(timerInterval);
+  timerInterval = null;
 }
 
 function incrementMoves() {
@@ -280,7 +288,7 @@ document.querySelector(".button").addEventListener("click", () => {
   moveCounter = 0;
   elapsedTime = 0;
   document.querySelector(".moves").textContent = "Moves: 0";
-  document.querySelector(".timer").textContent = "Time: 0s";
+  document.querySelector(".timer").textContent = formatTime(0);
   document.querySelector(".winner").style.display = "none";
 });
 
