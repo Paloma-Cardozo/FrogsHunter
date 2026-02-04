@@ -240,14 +240,14 @@ function checkForMatch() {
 }
 
 function disableCards() {
-  // mark matched so they are ignored by flipCard
+  
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
 
   firstCard.removeEventListener("click", flipCard);
   secondCard.removeEventListener("click", flipCard);
 
-  // update matched count and stop timer if all pairs are matched
+  
   matchedCount = (typeof matchedCount === "undefined" ? 0 : matchedCount) + 2;
   if (typeof gameCards !== "undefined" && matchedCount === gameCards.length) {
     clearInterval(timerInterval);
