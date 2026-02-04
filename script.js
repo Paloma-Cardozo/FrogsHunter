@@ -144,6 +144,10 @@ const availableCards = [
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
+let moveCounter = 0;
+let elapsedTime = 0;
+let timerInterval = null;
+
 const gameBoard = document.querySelector(".container");
 
 let gameCards = [];
@@ -204,10 +208,15 @@ function renderGameBoard() {
 }
 
 function flipCard() {
+  if (!timerInterval) startTimer();
   if (lockBoard) return;
+  if (this.classList.contains("flipped") || this.classList.contains("matched"))
+    return;
   if (this === firstCard) return;
 
   this.classList.add("flipped");
+
+  incrementMoves();
 
   if (!hasFlippedCard) {
     hasFlippedCard = true;
@@ -249,5 +258,30 @@ function resetBoard() {
   [hasFlippedCard, lockBoard] = [false, false];
   [firstCard, secondCard] = [null, null];
 }
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    elapsedTime++;
+    document.querySelector(".timer").textContent = `Time: ${elapsedTime}s`;
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function incrementMoves() {
+  moveCounter++;
+  document.querySelector(".moves").textContent = `Moves: ${moveCounter}`;
+}
+
+document.querySelector(".button").addEventListener("click", () => {
+  startGame(6);
+  moveCounter = 0;
+  elapsedTime = 0;
+  document.querySelector(".moves").textContent = "Moves: 0";
+  document.querySelector(".timer").textContent = "Time: 0s";
+  document.querySelector(".winner").style.display = "none";
+});
 
 startGame(6);
