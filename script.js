@@ -3,6 +3,7 @@ const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
 const restartButton = document.querySelector(".button");
+const defaultNumberOfPairs = 6;
 
 let gameCards = [];
 
@@ -163,8 +164,8 @@ const availableCards = [
 ];
 
 function shuffleArray(array) {
-  let currentIndex = array.length,
-    randomIndex;
+  let currentIndex = array.length;
+  let randomIndex;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
@@ -208,25 +209,23 @@ function startGame() {
   }, 1000);
 }
 
-function flipCard() {
-  console.log("Clicked element:", this);
-
+function flipCard(card) {
   if (game.lockBoard) return;
-  if (this === game.firstCard) return;
-  if (this.classList.contains("flipped")) return;
+  if (card === game.firstCard) return;
+  if (card.classList.contains("flipped")) return;
 
-  revealCard(this);
+  revealCard(card);
 
   if (!game.gameStarted) {
     startGame();
   }
 
   if (!game.firstCard) {
-    game.firstCard = this;
+    game.firstCard = card;
     return;
   }
 
-  game.secondCard = this;
+  game.secondCard = card;
   checkForMatch();
 }
 
@@ -281,7 +280,7 @@ function renderGameBoard() {
     cardElement.appendChild(cardInner);
     gameBoard.appendChild(cardElement);
 
-    cardInner.addEventListener("click", flipCard);
+    cardInner.addEventListener("click", () => flipCard(cardInner));
   });
 }
 
@@ -305,12 +304,12 @@ function checkForMatch() {
   }
 }
 
-function createGame(numberOfPairs) {
+function createGame(defaultNumberOfPairs) {
   gameBoard.replaceChildren();
 
   const shuffleCards = shuffleArray([...availableCards]);
 
-  const selectedCards = shuffleCards.slice(0, numberOfPairs);
+  const selectedCards = shuffleCards.slice(0, defaultNumberOfPairs);
 
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
@@ -330,8 +329,8 @@ function resetGame() {
   winner.style.display = "none";
 
   resetBoard();
-  createGame(6);
+  createGame(defaultNumberOfPairs);
 }
 
 restartButton.addEventListener("click", resetGame);
-createGame(6);
+createGame(defaultNumberOfPairs);
