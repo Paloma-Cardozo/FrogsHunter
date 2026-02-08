@@ -304,13 +304,11 @@ function checkForMatch() {
   }
 }
 
-function createGame(defaultNumberOfPairs) {
+function createGame(numberOfPairs) {
   gameBoard.replaceChildren();
 
   const shuffleCards = shuffleArray([...availableCards]);
-
-  const selectedCards = shuffleCards.slice(0, defaultNumberOfPairs);
-
+  const selectedCards = shuffleCards.slice(0, numberOfPairs);
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
