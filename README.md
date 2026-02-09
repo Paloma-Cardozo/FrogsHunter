@@ -32,10 +32,25 @@ The game logic and interactions are designed to be clear, responsive, and easy t
 
 This project is built using:
 
+**Frontend Technologies**
 - **HTML** for structure
 - **CSS** for layout and animations
 - **JavaScript** for game logic and DOM manipulation
-- **Git & GitHub** for version control and collaboration
+
+**Backend Technologies**
+- **Node.js** for server-side code
+- **Express.js** for building the API server
+- **SQLite** for data persistence
+
+**Development Tools**
+- **Git & GitHub** - Version control and collaboration
+- **npm (Node Package Manager)** - Dependency management and script running
+- **VS Code** - Code editor with built-in Git integration
+
+**Project Architecture**
+- **Client-Server Model** - Separation of frontend (client) and backend (server)
+- **RESTful API** - Communication between frontend and backend
+- **File-based Database** - SQLite database stored as database.db
 
 As part of the project milestones, the game evolves from a fully frontend-based implementation to a version that includes:
 
@@ -49,9 +64,14 @@ These steps are introduced progressively as the project advances through the spr
 ## 📂 Project Structure
 
 /frogHunter
-│── index.html
-│── styles.css
-│── script.js
+├── app/                
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+└── server/             
+    ├── package.json    
+    ├── index.js        
+    └── database.db 
 
 The structure is intentionally simple, allowing us to focus on core concepts such as game logic, state handling, and user interaction.
 
