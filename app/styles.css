@@ -57,6 +57,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
   padding: 0.6em 1.2em;
   background-color: #a3d86d;
   color: #ffffff;
@@ -80,20 +81,22 @@ body {
   font-size: 22px;
   font-weight: 600;
   color: #095327;
+  display: flex;
+  gap: 15px;
 }
 
 .container {
   display: grid;
   gap: 2vh;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   justify-content: center;
   max-width: 90vw;
   margin: 0 auto;
 }
 
 .flip-card {
-  width: 18vh;
-  height: 18vh;
+  width: min(18vh, 18vw, 160px);
+  height: min(18vh, 18vw, 160px);
   max-width: 160px;
   max-height: 160px;
   perspective: 1000px;
@@ -157,13 +160,19 @@ body {
 
 .frog-icon {
   width: 50px;
-  height: 50px;
+  height: auto;
 }
 
 .winner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   font-size: 40px;
   font-weight: 700;
   color: #69ba2e;
   display: none;
+  flex-direction: column;
+  align-items: center;
 }

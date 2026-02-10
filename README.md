@@ -69,10 +69,10 @@ This separation keeps responsibilities clear:
 
 ### Tooling
 
-**Git & GitHub** — version control and collaboration
-**npm** — dependency management and scripts
-**Postman** — API testing during development
-**VS Code** — development environment
+- **Git & GitHub** — version control and collaboration
+- **npm** — dependency management and scripts
+- **Postman** — API testing during development
+- **VS Code** — development environment
 
 ---
 

@@ -3,30 +3,24 @@ const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
 const restartButton = document.querySelector(".button");
+
 const defaultNumberOfPairs = 6;
+const cardFrontImageSrc = "Images/lotus-flower.png";
 
 let gameCards = [];
-
-const game = {
-  gameStarted: false,
-  totalReveals: 0,
-  totalTime: 0,
-  timerInterval: null,
-  firstCard: null,
-  secondCard: null,
-  lockBoard: false,
-  matchedPairs: 0,
-};
-
-const cardFrontImageSrc = "Images/lotus-flower.png";
+let elapsedTime = 0;
+let moveCounter = 0;
+let timerInterval = null;
+let hasFlippedCard = false;
+let lockBoard = false;
+let firstCard = null;
+let secondCard = null;
 
 async function fetchCards() {
   try {
     const response = await fetch("/cards");
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch cards");
-    }
+    if (!response.ok) throw new Error("Failed to fetch cards");
 
     return await response.json();
   } catch (error) {
@@ -48,81 +42,104 @@ function shuffleArray(array) {
       array[currentIndex],
     ];
   }
-
   return array;
 }
 
 function createElement(tag, className, attributes = {}) {
   const element = document.createElement(tag);
-
-  if (className) {
-    element.className = className;
-  }
-
+  if (className) element.className = className;
   Object.entries(attributes).forEach(([key, value]) => {
     element[key] = value;
   });
-
   return element;
+}
+
+function formatTime(totalSeconds) {
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `Time: ${mins}min ${secs}s`;
+}
+
+function startTimer() {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    elapsedTime++;
+    timer.textContent = formatTime(elapsedTime);
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function incrementMoves() {
+  moveCounter++;
+  moves.textContent = `Moves: ${moveCounter}`;
 }
 
 function revealCard(card) {
   card.classList.add("flipped");
-  game.totalReveals++;
-  moves.textContent = `Reveals: ${game.totalReveals}`;
-}
-
-function startGame() {
-  game.gameStarted = true;
-  game.timerInterval = setInterval(() => {
-    game.totalTime++;
-
-    timer.textContent = `Time: ${game.totalTime} s`;
-  }, 1000);
+  incrementMoves();
 }
 
 function flipCard(card) {
-  if (game.lockBoard) return;
-  if (card === game.firstCard) return;
-  if (card.classList.contains("flipped")) return;
+  if (lockBoard) return;
+  if (card === firstCard) return;
+  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+    return;
 
   revealCard(card);
 
-  if (!game.gameStarted) {
-    startGame();
-  }
+  if (!timerInterval) startTimer();
 
-  if (!game.firstCard) {
-    game.firstCard = card;
+  if (!hasFlippedCard) {
+    hasFlippedCard = true;
+    firstCard = card;
     return;
   }
 
-  game.secondCard = card;
+  secondCard = card;
   checkForMatch();
 }
 
-function endGame() {
-  clearInterval(game.timerInterval);
-  winner.style.display = "block";
-}
+function checkForMatch() {
+  const isMatch = firstCard.dataset.name === secondCard.dataset.name;
 
-function resetBoard() {
-  game.lockBoard = false;
-  game.firstCard = null;
-  game.secondCard = null;
+  if (isMatch) {
+    disableCards();
+  } else {
+    unflipCards();
+  }
 }
 
 function disableCards() {
-  game.firstCard.removeEventListener("click", flipCard);
-  game.secondCard.removeEventListener("click", flipCard);
+  firstCard.classList.add("matched");
+  secondCard.classList.add("matched");
 
-  game.matchedPairs++;
+  firstCard.removeEventListener("click", flipCard);
+  secondCard.removeEventListener("click", flipCard);
 
-  if (game.matchedPairs === gameCards.length / 2) {
-    endGame();
+  if (document.querySelectorAll(".flip-card-inner.matched").length === gameCards.length) {
+    stopTimer();
+    showWinner();
   }
 
   resetBoard();
+}
+
+function unflipCards() {
+  lockBoard = true;
+  setTimeout(() => {
+    firstCard.classList.remove("flipped");
+    secondCard.classList.remove("flipped");
+    resetBoard();
+  }, 1500);
+}
+
+function resetBoard() {
+  [hasFlippedCard, lockBoard] = [false, false];
+  [firstCard, secondCard] = [null, null];
 }
 
 function renderGameBoard() {
@@ -156,34 +173,17 @@ function renderGameBoard() {
   });
 }
 
-function unflipCards() {
-  game.lockBoard = true;
-
-  setTimeout(function () {
-    game.firstCard.classList.remove("flipped");
-    game.secondCard.classList.remove("flipped");
-    resetBoard();
-  }, 1500);
-}
-
-function checkForMatch() {
-  const isMatch = game.firstCard.dataset.name === game.secondCard.dataset.name;
-
-  if (isMatch) {
-    disableCards();
-  } else {
-    unflipCards();
-  }
-}
-
 async function createGame(numberOfPairs) {
   gameBoard.replaceChildren();
+  gameCards = [];
+  elapsedTime = 0;
+  moveCounter = 0;
+  moves.textContent = `Moves: 0`;
+  timer.textContent = formatTime(0);
+  stopTimer();
 
   const cardsApi = await fetchCards();
-
-  if (cardsApi.length === 0) {
-    return;
-  }
+  if (cardsApi.length === 0) return;
 
   const shuffleCards = shuffleArray([...cardsApi]);
   const selectedCards = shuffleCards.slice(0, numberOfPairs);
@@ -192,21 +192,25 @@ async function createGame(numberOfPairs) {
   renderGameBoard();
 }
 
-function resetGame() {
-  clearInterval(game.timerInterval);
+function showWinner() {
+  const movesText = moves.textContent;
+  const timerText = timer.textContent;
 
-  game.gameStarted = false;
-  game.totalReveals = 0;
-  game.totalTime = 0;
-  game.matchedPairs = 0;
+  const winnerMoves = winner.querySelector(".winner-moves");
+  const winnerTime = winner.querySelector(".winner-time");
 
-  moves.textContent = `Reveals: 0`;
-  timer.textContent = `Time: 0 s`;
-  winner.style.display = "none";
+  if (winnerMoves) winnerMoves.textContent = movesText;
+  if (winnerTime) winnerTime.textContent = timerText;
 
-  resetBoard();
-  createGame(defaultNumberOfPairs);
+  winner.style.display = "flex";
 }
 
-restartButton.addEventListener("click", resetGame);
+restartButton.addEventListener("click", () => {
 createGame(defaultNumberOfPairs);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  moves.textContent = `Moves: 0`;
+  timer.textContent = formatTime(0);
+  createGame(defaultNumberOfPairs);
+});

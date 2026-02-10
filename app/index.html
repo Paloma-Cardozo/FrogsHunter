@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Frog Hunter</title>
+    <title>Frog Hunter - memory game</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
@@ -11,33 +11,19 @@
   </head>
 
   <body>
-    <h1 class="title">
-      <img
-        src="Images/frog-hunter.png"
-        alt="Person dressed as a frog"
-        class="frog-icon" />
-      Frog Hunter
-      <img
-        src="Images/frog-hunter.png"
-        alt="Person dressed as a frog"
-        class="frog-icon" />
-    </h1>
+    <h1 class="title">Frog Hunter</h1>
 
     <h2 class="text">Test Your Memory. Hunt the Frogs.</h2>
 
     <div class="game">
       <div class="controls">
         <button class="button">
-          <img
-            src="Images/froggy.png"
-            alt="Happy frog icon"
-            class="frog-icon" />
           <span class="button-text">Restart</span>
         </button>
 
         <div class="state">
           <span class="moves">Reveals: 0</span>
-          <span class="timer">Time: 0 s</span>
+          <span class="timer">Time: 00:00</span>
         </div>
       </div>
 
@@ -46,6 +32,8 @@
       <div class="winner">
         <img src="Images/frog.gif" alt="Frog animation" class="frog-icon" />
         You won!
+        <p class="winner-moves"></p>
+        <p class="winner-time"></p>
         <img src="Images/frog.gif" alt="Frog animation" class="frog-icon" />
       </div>
     </div>
