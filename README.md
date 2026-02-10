@@ -64,7 +64,8 @@ These steps are introduced progressively as the project advances through the spr
 ## 📂 Project Structure
 ```
 /frogHunter
-├── app/                
+├── app/
+│   ├── Images/            
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
