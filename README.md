@@ -62,7 +62,7 @@ These steps are introduced progressively as the project advances through the spr
 ---
 
 ## 📂 Project Structure
-
+```
 /frogHunter
 ├── app/                
 │   ├── index.html
@@ -72,6 +72,7 @@ These steps are introduced progressively as the project advances through the spr
     ├── package.json    
     ├── index.js        
     └── database.db 
+```
 
 The structure is intentionally simple, allowing us to focus on core concepts such as game logic, state handling, and user interaction.
 
