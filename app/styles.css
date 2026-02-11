@@ -162,15 +162,19 @@ body {
 }
 
 .winner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
   font-size: 40px;
   font-weight: 700;
   color: #69ba2e;
-  display: none;
-  flex-direction: column;
-  align-items: center;
+  z-index: 1000;
 }
