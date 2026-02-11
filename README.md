@@ -137,21 +137,27 @@ The game will fetch card data from the running backend server.
 
 ```
 frog hunter/
-├── app/                                                # Frontend
-| |── Images/                                           # Card images and assets
-| │── index.html
-| │── styles.css
-| └── script.js
+├── postman/                                            # Postman tests, collection and API evidence
+|   ├── collection/                                     # Exported Postman collection
+│   ├── screenshots/                                    # Evidence of API responses and test results
+│   │   ├── body-preview.png
+│   │   └── test-results.png
+│   └── postman-tests.md                                # Documentation of Postman test scripts
+|
+├── app/                                                # Frontend application
+| |── Images/                                           # Card images and visual assets
+| │── index.html                                        # Main HTML file
+| │── styles.css                                        # Application styles
+| └── script.js                                         # Frontend logic
 |
 ├── server/                                             # Backend
-| ├── package.json
-| ├── package-lock.json
+| ├── package.json                                      # Backend dependencies
+| ├── package-lock.json                                 # Dependency lock file
 | ├── index.js                                          # Express server and API routes
 | ├── database.db                                       # SQLite database
-| ├── script-2.sql # Database schema and seed data
-| └── frog-hunter-api.postman_collection.json
+| └── script-2.sql                                      # Database schema and seed data
 |
-└── README.md                                           # Project documentation
+└── README.md                                           # Project overview and setup instructions
 ```
 
 The structure is intentionally simple to keep the focus on:
