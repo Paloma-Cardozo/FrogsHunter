@@ -5,52 +5,74 @@
 }
 
 body {
-  background: #ffffff;
+  background: #0e4b43;
   font-family: "Noto Sans", sans-serif;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+header {
+  padding-top: 1em;
+}
+
+.wrap {
+  width: 95%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .game {
-  max-height: 90vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  margin-top: 2em;
 }
 
 .title,
-.text {
+.text, 
+footer {
   text-align: center;
   margin: 10px;
 }
 
 .title {
   font-size: 35px;
-  color: #127439;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .text {
   font-size: 20px;
-  color: #095327;
+  color: #3a9377;
 }
 
-.text a {
-  color: #095327;
+a {
+  color: #54b999;
   text-decoration: none;
 }
 
-.text a:hover {
-  text-decoration: underline;
-  cursor: pointer;
+a:hover {
+  color: #76e7c3;
 }
 
 .controls {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0 clamp(10px, 4vw, 20px) 20px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 30px;
+  justify-content: flex-start;
+  width: 100%;
+
 }
 
 .button {
@@ -59,44 +81,40 @@ body {
   gap: 8px;
   flex-wrap: wrap;
   padding: 0.6em 1.2em;
-  background-color: #a3d86d;
+  background-color: #cb6812;
   color: #ffffff;
   border: none;
-  border-radius: 50px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: clamp(16px, 2vh, 20px);
-  font-weight: 700;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-transform: uppercase;
   justify-content: center;
   font-family: "Noto Sans", sans-serif;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .button:hover {
-  background-color: #7cb33f;
+  background-color: #fa8e35;
   transform: scale(1.05);
 }
 
 .state {
-  font-size: 22px;
-  font-weight: 600;
-  color: #095327;
-  display: flex;
-  gap: 15px;
+  font-size: 18px;
+  color: #54b999; 
 }
 
 .container {
   display: grid;
-  grid-template-columns: repeat(var(--columns), 140px);
+  grid-template-columns: repeat(var(--columns), 30%);
   justify-content: center;
-  gap: 12px;
+  gap: 1em;
   margin: 0 auto;
 }
 
 .flip-card {
-  width: 140px;
+  width: 7em;
   aspect-ratio: 1 / 1;
-  max-width: 160px;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -107,10 +125,7 @@ body {
   height: 100%;
   transition: transform 1s;
   transform-style: preserve-3d;
-  box-shadow:
-    0 14px 28px rgba(0, 0, 0, 0.25),
-    0 10px 10px rgba(0, 0, 0, 0.22);
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
 .flip-card:hover .flip-card-inner:not(.flipped) {
@@ -134,11 +149,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
 .flip-card-front {
-  background-color: #f8ffc9;
+  background-color: #19996b;
 }
 
 .flip-card-back {
@@ -151,14 +166,19 @@ body {
 }
 
 .flip-card-back img {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   object-fit: cover;
 }
 
 .frog-icon {
   width: 50px;
   height: auto;
+}
+
+footer { 
+  color: #3a9377;
+  padding-bottom: 1em;
 }
 
 .winner {

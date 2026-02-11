@@ -7,28 +7,27 @@
     <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-    <h1 class="title">Frog Hunter</h1>
-
-    <h2 class="text">Test Your Memory. Hunt the Frogs.</h2>
-
-    <div class="game">
+    <header class="wrap text">
+      <h1 class="title">Frog Hunter</h1>
+      <h2>Test Your Memory. Hunt the Frogs.</h2>
+    </header>
+    <main class="game wrap">
       <div class="controls">
         <button class="button">
           <span class="button-text">Restart</span>
         </button>
 
         <div class="state">
-          <span class="moves">Reveals: 0</span>
-          <span class="timer">Time: 00:00</span>
+          <div class="moves">Reveals: 0</div>
+          <div class="timer">Time: 00:00</div>
         </div>
       </div>
-
       <div class="container"></div>
-
       <div class="winner">
         <img src="Images/frog.gif" alt="Frog animation" class="frog-icon" />
         You won!
@@ -36,13 +35,16 @@
         <p class="winner-time"></p>
         <img src="Images/frog.gif" alt="Frog animation" class="frog-icon" />
       </div>
-    </div>
+    </main>
 
-    <footer>
-      <div class="text">
-        <a href="https://www.flaticon.com" target="_blank" title="Flaticon"
-          >Stickers created by Stickers - Flaticon</a
-        >
+    <footer class="wrap">
+      <div>
+        <p>
+          Stickers created by
+          <a href="https://www.flaticon.com" target="_blank" title="Flaticon"
+            >Flaticon</a
+          >
+        </p>
       </div>
     </footer>
 

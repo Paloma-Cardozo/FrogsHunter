@@ -55,9 +55,9 @@ function createElement(tag, className, attributes = {}) {
 }
 
 function formatTime(totalSeconds) {
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = totalSeconds % 60;
-  return `Time: ${mins}min ${secs}s`;
+  const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+  const secs = (totalSeconds % 60).toString().padStart(2, '0');
+  return `Time: ${mins}:${secs}`;
 }
 
 function startTimer() {
@@ -75,7 +75,7 @@ function stopTimer() {
 
 function incrementMoves() {
   moveCounter++;
-  moves.textContent = `Moves: ${moveCounter}`;
+  moves.textContent = `Reveals: ${moveCounter}`;
 }
 
 function revealCard(card) {
@@ -146,13 +146,18 @@ function resetBoard() {
 }
 
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
+  const isMobile = window.innerWidth <= 600;
   let columns;
 
-  if (numberOfPairs <= 6) columns = 4;
-  else if (numberOfPairs <= 8) columns = 4;
-  else if (numberOfPairs <= 9) columns = 3;
-  else if (numberOfPairs <= 10) columns = 5;
-  else columns = 6;
+  if (isMobile) {
+    columns = 3;
+  } else {
+    if (numberOfPairs <= 6) columns = 4;
+    else if (numberOfPairs <= 8) columns = 4;
+    else if (numberOfPairs <= 9) columns = 3;
+    else if (numberOfPairs <= 10) columns = 5;
+    else columns = 6;
+  }
 
   gameBoard.style.setProperty("--columns", columns);
 }
@@ -194,7 +199,7 @@ async function createGame(numberOfPairs) {
   elapsedTime = 0;
   moveCounter = 0;
 
-  moves.textContent = `Moves: 0`;
+  moves.textContent = `Reveals: 0`;
   timer.textContent = formatTime(0);
   stopTimer();
 
@@ -227,8 +232,13 @@ restartButton.addEventListener("click", () => {
   createGame(defaultNumberOfPairs);
 });
 
+window.addEventListener("resize", () => {
+  const currentPairs = gameCards.length > 0 ? gameCards.length / 2 : defaultNumberOfPairs;
+  setGridColumns(currentPairs);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-  moves.textContent = `Moves: 0`;
+  moves.textContent = `Reveals: 0`;
   timer.textContent = formatTime(0);
   createGame(defaultNumberOfPairs);
 });
