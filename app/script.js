@@ -120,18 +120,19 @@ function disableCards() {
   firstCard.removeEventListener("click", flipCard);
   secondCard.removeEventListener("click", flipCard);
 
-  firstCard.classList.add("hidden");
-  secondCard.classList.add("hidden");
+  setTimeout(() => {
+    firstCard.classList.add("hidden");
+    secondCard.classList.add("hidden");
 
-  if (
-    document.querySelectorAll(".flip-card-inner.matched").length ===
-    gameCards.length
-  ) {
-    stopTimer();
-    showWinner();
-  }
-
-  resetBoard();
+    if (
+      document.querySelectorAll(".flip-card-inner.matched").length ===
+      gameCards.length
+    ) {
+      stopTimer();
+      showWinner();
+    }
+    resetBoard();
+  }, 1500);
 }
 
 function unflipCards() {
@@ -223,7 +224,7 @@ function showWinner() {
   if (winnerMoves) winnerMoves.textContent = movesText;
   if (winnerTime) winnerTime.textContent = timerText;
 
-  winner.style.display = "flex";
+  winner.style.display = "block";
 }
 
 restartButton.addEventListener("click", () => {

@@ -127,11 +127,11 @@ body {
 
 .flip-card-inner.hidden {
   opacity: 0;
-  transform: scale(0);
+  transform: scale(0.5) rotateY(180deg);
   pointer-events: none;
   transition:
-    opacity 0.9s,
-    transform 0.9s;
+    opacity 0.8s ease-in-out,
+    transform 0.8s ease-in-out;
 }
 
 .flip-card-front,
@@ -171,19 +171,10 @@ body {
 }
 
 .winner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.85);
   display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   text-align: center;
+  margin: auto;
   font-size: 40px;
   font-weight: 700;
   color: #69ba2e;
-  z-index: 1000;
 }
