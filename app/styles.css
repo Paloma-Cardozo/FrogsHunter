@@ -76,13 +76,13 @@ a:hover {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  padding: 0.6em 1.2em;
+  padding: 0.6rem 1.2rem;
   background-color: #cb6812;
   color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   font-weight: 600;
   text-transform: uppercase;
   justify-content: center;
@@ -168,7 +168,7 @@ a:hover {
 }
 
 .frog-icon {
-  width: 50px;
+  width: 120px;
   height: auto;
 }
 
@@ -182,20 +182,45 @@ footer {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(14 75 67 / 75%);;
+  background: #0e4b43;
   display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-size: 40px;
-  font-weight: 700;
-  color: #69ba2e;
+  font-size: 1.5rem;
   z-index: 1000;
+}
+
+.winner-container {
+  padding: 4rem;
+  border-radius: 5px;
+  border: 10px solid #10574d;
+  max-width: 600px;
+  margin: 10%;
+ 
+}
+
+
+
+.winner-title {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #54b999;
+  margin-bottom: 20px;
+}
+
+.winner button {
+  justify-self: center;
+  margin-top: 25px;
 }
 
 @media (min-width: 1000px) {
   .container {
     gap: 1em;
+  }
+
+  .winner-container {
+    margin: 10% auto;
   }
 }
