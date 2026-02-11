@@ -4,7 +4,7 @@ const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
 const restartButton = document.querySelector(".button");
 
-const defaultNumberOfPairs = 6;
+const defaultNumberOfPairs = 8;
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
 let gameCards = [];
@@ -55,8 +55,10 @@ function createElement(tag, className, attributes = {}) {
 }
 
 function formatTime(totalSeconds) {
-  const mins = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-  const secs = (totalSeconds % 60).toString().padStart(2, '0');
+  const mins = Math.floor(totalSeconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (totalSeconds % 60).toString().padStart(2, "0");
   return `Time: ${mins}:${secs}`;
 }
 
@@ -146,18 +148,13 @@ function resetBoard() {
 }
 
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
-  const isMobile = window.innerWidth <= 600;
   let columns;
 
-  if (isMobile) {
-    columns = 3;
-  } else {
-    if (numberOfPairs <= 6) columns = 4;
-    else if (numberOfPairs <= 8) columns = 4;
-    else if (numberOfPairs <= 9) columns = 3;
-    else if (numberOfPairs <= 10) columns = 5;
-    else columns = 6;
-  }
+  if (numberOfPairs <= 6) columns = 4;
+  else if (numberOfPairs <= 8) columns = 4;
+  else if (numberOfPairs <= 9) columns = 3;
+  else if (numberOfPairs <= 10) columns = 5;
+  else columns = 6;
 
   gameBoard.style.setProperty("--columns", columns);
 }
@@ -233,7 +230,8 @@ restartButton.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", () => {
-  const currentPairs = gameCards.length > 0 ? gameCards.length / 2 : defaultNumberOfPairs;
+  const currentPairs =
+    gameCards.length > 0 ? gameCards.length / 2 : defaultNumberOfPairs;
   setGridColumns(currentPairs);
 });
 
