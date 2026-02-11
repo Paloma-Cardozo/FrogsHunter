@@ -120,6 +120,9 @@ function disableCards() {
   firstCard.removeEventListener("click", flipCard);
   secondCard.removeEventListener("click", flipCard);
 
+  firstCard.classList.add("hidden");
+  secondCard.classList.add("hidden");
+
   if (
     document.querySelectorAll(".flip-card-inner.matched").length ===
     gameCards.length

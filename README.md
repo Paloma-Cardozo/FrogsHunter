@@ -19,7 +19,7 @@ Core mechanics:
 - Cards start face down
 - Players can reveal two cards at a time
 - Revealed cards show their image
-- Matching cards remain revealed
+- Matching cards disappear from the board and are no longer interactive
 - Not matching cards flip back after a short delay
 - The game ends when all matching pairs are found
 - A timer starts when the first card is revealed
@@ -175,6 +175,8 @@ The structure is intentionally simple to keep the focus on:
 - The backend remains minimal by design.
 - The frontend grid and cards scale with screen size; minor UI refinements are possible for smaller devices.
 - Image assets are credited in the UI.
+- Matched cards are now visually hidden with a smooth animation, providing clear feedback when a pair is found.
+- The 'matched' state ensures cards are both non-interactive and visually removed without affecting game logic or grid layout.
 
 ---
 
