@@ -2,7 +2,7 @@ const gameBoard = document.querySelector(".container");
 const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
-const restartButton = document.querySelector(".button");
+const buttons = document.querySelectorAll(".button");
 
 const defaultNumberOfPairs = 6;
 const cardFrontImageSrc = "Images/lotus-flower.png";
@@ -225,8 +225,11 @@ function showWinner() {
   winner.style.display = "flex";
 }
 
-restartButton.addEventListener("click", () => {
-  createGame(defaultNumberOfPairs);
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    winner.style.display = "none";   
+    createGame(defaultNumberOfPairs); 
+  });
 });
 
 window.addEventListener("resize", () => {
