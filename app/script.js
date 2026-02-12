@@ -227,6 +227,11 @@ async function createGame(numberOfPairs) {
   winner.style.display = "none";
   timeout.style.display = "none";
 
+  lockBoard = false; 
+  hasFlippedCard = false;
+  firstCard = null;
+  secondCard = null;
+
   gameCards = [];
   moveCounter = 0;
 
