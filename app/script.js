@@ -6,7 +6,6 @@ const timeout = document.querySelector(".timeout");
 const buttons = document.querySelectorAll(".button");
 const levelButtons = document.querySelectorAll(".level-btn");
 
-
 const defaultNumberOfPairs = 6;
 let currentPairs = defaultNumberOfPairs;
 
@@ -15,13 +14,15 @@ const cardFrontImageSrc = "Images/lotus-flower.png";
 const levelSettings = {
   6: 60,
   8: 90,
-  10: 120
+  10: 120,
 };
 
 let gameCards = [];
-let timeLeft = levelSettings[currentPairs];
+let timeLeft = levelSettings[defaultNumberOfPairs];
+let endTime = null;
 let moveCounter = 0;
 let timerInterval = null;
+
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard = null;
@@ -42,10 +43,9 @@ async function fetchCards() {
 
 function shuffleArray(array) {
   let currentIndex = array.length;
-  let randomIndex;
 
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     [array[currentIndex], array[randomIndex]] = [
@@ -77,28 +77,39 @@ function formatTime(totalSeconds) {
   return `Time left: ${mins}:${secs}`;
 }
 
-function startTimer() {
-  if (timerInterval) return;
-
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    timer.textContent = formatTime(timeLeft);
-
-    if (timeLeft <= 0) {
-      stopTimer();
-      showTimeout();
-    }
-  }, 1000);
-}
-
 function stopTimer() {
   clearInterval(timerInterval);
   timerInterval = null;
 }
 
+function resetBoard() {
+  hasFlippedCard = false;
+  lockBoard = false;
+  firstCard = null;
+  secondCard = null;
+}
+
 function showTimeout() {
   lockBoard = true;
+  resetBoard();
   timeout.style.display = "flex";
+}
+
+function startTimer() {
+  if (timerInterval) return;
+
+  endTime = Date.now() + timeLeft * 1000;
+
+  timerInterval = setInterval(() => {
+    const remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+    timer.textContent = formatTime(remaining);
+
+    if (remaining === 0) {
+      stopTimer();
+      showTimeout();
+    }
+  }, 250);
 }
 
 function incrementMoves() {
@@ -111,10 +122,61 @@ function revealCard(card) {
   incrementMoves();
 }
 
+function checkForMatch() {
+  const isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
+  if (isMatch) {
+    disableCards();
+  } else {
+    unflipCards();
+  }
+}
+
+function disableCards() {
+  lockBoard = true;
+
+  const handleTransitionEnd = (e) => {
+    if (e.propertyName !== "transform") return;
+
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+
+    secondCard.removeEventListener("transitionend", handleTransitionEnd);
+
+    const matchedCards = document.querySelectorAll(
+      ".flip-card-inner.matched",
+    ).length;
+
+    if (matchedCards === gameCards.length) {
+      stopTimer();
+      showWinner();
+    }
+
+    resetBoard();
+  };
+
+  secondCard.addEventListener("transitionend", handleTransitionEnd);
+}
+
+function showWinner() {
+  lockBoard = true;
+
+  const winnerMoves = winner.querySelector(".winner-moves");
+  const winnerTime = winner.querySelector(".winner-time");
+
+  if (winnerMoves) winnerMoves.textContent = moves.textContent;
+  if (winnerTime) winnerTime.textContent = timer.textContent;
+
+  winner.style.display = "flex";
+}
+
 function flipCard(card) {
-  if (lockBoard) return;
-  if (card === firstCard) return;
-  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+  if (
+    lockBoard ||
+    card === firstCard ||
+    card.classList.contains("flipped") ||
+    card.classList.contains("matched")
+  )
     return;
 
   revealCard(card);
@@ -132,39 +194,6 @@ function flipCard(card) {
   checkForMatch();
 }
 
-function checkForMatch() {
-  const isMatch = firstCard.dataset.name === secondCard.dataset.name;
-
-  if (isMatch) {
-    disableCards();
-  } else {
-    unflipCards();
-  }
-}
-
-function disableCards() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
-  lockBoard = true;
-
-  setTimeout(() => {
-    firstCard.style.transform = "scale(0.5) rotateY(180deg)";
-    secondCard.style.transform = "scale(0.5) rotateY(180deg)";
-    firstCard.style.opacity = "0";
-    secondCard.style.opacity = "0";
-
-    if (
-      document.querySelectorAll(".flip-card-inner.matched").length ===
-      gameCards.length
-    ) {
-      stopTimer();
-      showWinner();
-    }
-
-    resetBoard();
-  }, 1000);
-}
-
 function unflipCards() {
   lockBoard = true;
 
@@ -173,25 +202,12 @@ function unflipCards() {
     secondCard.classList.remove("flipped");
 
     resetBoard();
-  }, 1500);
-}
-
-function resetBoard() {
-  [hasFlippedCard, lockBoard] = [false, false];
-  [firstCard, secondCard] = [null, null];
+  }, 1200);
 }
 
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
-  const isMobile = window.innerWidth <= 600;
-  let columns;
-
-  if (isMobile) {
-    columns = 4;
-  } else {
-  if (numberOfPairs <= 8) columns = 4;
-  else if (numberOfPairs <= 10) columns = 5;
-  else columns = 6;
-  }
+  let columns = 4;
+  if (numberOfPairs === 10) columns = 5;
 
   gameBoard.style.setProperty("--columns", columns);
 }
@@ -229,22 +245,25 @@ function renderGameBoard() {
 
 async function createGame(numberOfPairs) {
   gameBoard.replaceChildren();
+
   winner.style.display = "none";
   timeout.style.display = "none";
 
-  lockBoard = false; 
-  hasFlippedCard = false;
-  firstCard = null;
-  secondCard = null;
+  stopTimer();
+  resetBoard();
+
+  moveCounter = 0;
+  moves.textContent = `Reveals: 0`;
 
   gameCards = [];
-  moveCounter = 0;
 
-  timeLeft = levelSettings[numberOfPairs]; 
+  if (levelSettings[numberOfPairs] !== undefined) {
+    timeLeft = levelSettings[numberOfPairs];
+  } else {
+    timeLeft = 60;
+  }
 
-  moves.textContent = `Reveals: 0`;
   timer.textContent = formatTime(timeLeft);
-  stopTimer();
 
   setGridColumns(numberOfPairs);
 
@@ -256,19 +275,6 @@ async function createGame(numberOfPairs) {
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
-}
-
-function showWinner() {
-  const movesText = moves.textContent;
-  const timerText = timer.textContent;
-
-  const winnerMoves = winner.querySelector(".winner-moves");
-  const winnerTime = winner.querySelector(".winner-time");
-
-  if (winnerMoves) winnerMoves.textContent = movesText;
-  if (winnerTime) winnerTime.textContent = timerText;
-
-  winner.style.display = "flex";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -289,11 +295,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  moves.textContent = `Reveals: 0`;
-  timer.textContent = formatTime(timeLeft);
   createGame(currentPairs);
-});
-
-window.addEventListener("resize", () => {
-  setGridColumns(currentPairs);
 });
