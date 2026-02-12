@@ -227,7 +227,8 @@ footer {
   padding: 1em 0;
 }
 
-.winner {
+.winner,
+.timeout {
   position: fixed;
   top: 0;
   left: 0;
@@ -239,12 +240,13 @@ footer {
   align-items: center;
   flex-direction: column;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   z-index: 1000;
 }
 
-.winner-container {
-  padding: 4rem;
+.winner-container,
+.timeout-container {
+  padding: 3rem;
   border-radius: 5px;
   border: 10px solid #10574d;
   max-width: 600px;
@@ -252,14 +254,16 @@ footer {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-.winner-title {
+.winner-title,
+.timeout-title {
   font-weight: 700;
   font-size: 2rem;
   color: #54b999;
   margin-bottom: 20px;
 }
 
-.winner button {
+.winner-btn,
+.timeout-btn {
   justify-self: center;
   margin-top: 25px;
 }
@@ -288,7 +292,8 @@ footer {
     gap: 1em;
   }
 
-  .winner-container {
+  .winner-container,
+  .timeout-container {
     margin: 10% auto;
   }
 }

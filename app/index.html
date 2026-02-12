@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Frog Hunter - memory game</title>
+    <link rel="icon" type="image/x-icon" href="Images/favicon.ico" />
     <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
@@ -19,13 +20,13 @@
     <main class="game wrap">
       <div class="controls">
         <div class="controls-main">
-          <button class="button">
+          <button class="button restart-btn">
             <span class="button-text">Restart</span>
           </button>
 
           <div class="state">
             <div class="moves">Reveals: 0</div>
-            <div class="timer">Time: 00:00</div>
+            <div class="timer countdown-timer">Time left: 00:00</div>
           </div>
         </div>
 
@@ -48,7 +49,26 @@
           <p class="winner-title">You won!</p>
           <p class="winner-moves"></p>
           <p class="winner-time"></p>
-          <button class="button">
+          <button class="button winner-btn">
+            <span class="button-text">New game</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="timeout">
+        <div class="timeout-container">
+          <img
+            src="Images/mind-blown.png"
+            alt="Frog mind blown"
+            class="frog-icon" />
+
+          <p class="timeout-title">Oops! Time’s Up</p>
+          <p class="timeout-text">So close!</p>
+          <p class="timeout-text">
+            You ran out of time before finding all the pairs.
+          </p>
+          <p class="timeout-text">Try again?</p>
+          <button class="button timeout-btn">
             <span class="button-text">New game</span>
           </button>
         </div>

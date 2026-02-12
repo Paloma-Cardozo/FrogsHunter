@@ -2,6 +2,7 @@ const gameBoard = document.querySelector(".container");
 const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
+const timeout = document.querySelector(".timeout");
 const buttons = document.querySelectorAll(".button");
 const levelButtons = document.querySelectorAll(".level-btn");
 
@@ -10,10 +11,18 @@ let currentPairs = defaultNumberOfPairs;
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
+const levelSettings = {
+  6: 60,
+  8: 90,
+  10: 120,
+};
+
 let gameCards = [];
-let elapsedTime = 0;
+let timeLeft = levelSettings[defaultNumberOfPairs];
+let endTime = null;
 let moveCounter = 0;
 let timerInterval = null;
+
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard = null;
@@ -34,10 +43,9 @@ async function fetchCards() {
 
 function shuffleArray(array) {
   let currentIndex = array.length;
-  let randomIndex;
 
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
     [array[currentIndex], array[randomIndex]] = [
@@ -66,21 +74,42 @@ function formatTime(totalSeconds) {
     .padStart(2, "0");
   const secs = (totalSeconds % 60).toString().padStart(2, "0");
 
-  return `Time: ${mins}:${secs}`;
-}
-
-function startTimer() {
-  if (timerInterval) return;
-
-  timerInterval = setInterval(() => {
-    elapsedTime++;
-    timer.textContent = formatTime(elapsedTime);
-  }, 1000);
+  return `Time left: ${mins}:${secs}`;
 }
 
 function stopTimer() {
   clearInterval(timerInterval);
   timerInterval = null;
+}
+
+function resetBoard() {
+  hasFlippedCard = false;
+  lockBoard = false;
+  firstCard = null;
+  secondCard = null;
+}
+
+function showTimeout() {
+  lockBoard = true;
+  resetBoard();
+  timeout.style.display = "flex";
+}
+
+function startTimer() {
+  if (timerInterval) return;
+
+  endTime = Date.now() + timeLeft * 1000;
+
+  timerInterval = setInterval(() => {
+    const remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+    timer.textContent = formatTime(remaining);
+
+    if (remaining === 0) {
+      stopTimer();
+      showTimeout();
+    }
+  }, 250);
 }
 
 function incrementMoves() {
@@ -91,27 +120,6 @@ function incrementMoves() {
 function revealCard(card) {
   card.classList.add("flipped");
   incrementMoves();
-}
-
-function flipCard(card) {
-  if (lockBoard) return;
-  if (card === firstCard) return;
-  if (card.classList.contains("flipped") || card.classList.contains("matched"))
-    return;
-
-  revealCard(card);
-
-  if (!timerInterval) startTimer();
-
-  if (!hasFlippedCard) {
-    hasFlippedCard = true;
-    firstCard = card;
-
-    return;
-  }
-
-  secondCard = card;
-  checkForMatch();
 }
 
 function checkForMatch() {
@@ -136,16 +144,50 @@ function disableCards() {
     firstCard.style.opacity = "0";
     secondCard.style.opacity = "0";
 
-    if (
-      document.querySelectorAll(".flip-card-inner.matched").length ===
-      gameCards.length
-    ) {
+    const matchedCards = document.querySelectorAll(
+      ".flip-card-inner.matched",
+    ).length;
+
+    if (matchedCards === gameCards.length) {
       stopTimer();
       showWinner();
     }
 
     resetBoard();
-  }, 1000);
+  }, 800);
+}
+
+function showWinner() {
+  lockBoard = true;
+
+  const winnerMoves = winner.querySelector(".winner-moves");
+  const winnerTime = winner.querySelector(".winner-time");
+
+  if (winnerMoves) winnerMoves.textContent = moves.textContent;
+  if (winnerTime) winnerTime.textContent = timer.textContent;
+
+  winner.style.display = "flex";
+}
+
+function flipCard(card) {
+  if (lockBoard) return;
+  if (card === firstCard) return;
+  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+    return;
+
+  revealCard(card);
+
+  if (!timerInterval) startTimer();
+
+  if (!hasFlippedCard) {
+    hasFlippedCard = true;
+    firstCard = card;
+
+    return;
+  }
+
+  secondCard = card;
+  checkForMatch();
 }
 
 function unflipCards() {
@@ -156,19 +198,13 @@ function unflipCards() {
     secondCard.classList.remove("flipped");
 
     resetBoard();
-  }, 1500);
-}
-
-function resetBoard() {
-  [hasFlippedCard, lockBoard] = [false, false];
-  [firstCard, secondCard] = [null, null];
+  }, 1200);
 }
 
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
   let columns;
 
-  if (numberOfPairs <= 6) columns = 3;
-  else if (numberOfPairs <= 8) columns = 4;
+  if (numberOfPairs <= 8) columns = 4;
   else if (numberOfPairs <= 10) columns = 5;
   else columns = 6;
 
@@ -208,15 +244,25 @@ function renderGameBoard() {
 
 async function createGame(numberOfPairs) {
   gameBoard.replaceChildren();
+
   winner.style.display = "none";
+  timeout.style.display = "none";
+
+  stopTimer();
+  resetBoard();
+
+  moveCounter = 0;
+  moves.textContent = `Reveals: 0`;
 
   gameCards = [];
-  elapsedTime = 0;
-  moveCounter = 0;
 
-  moves.textContent = `Reveals: 0`;
-  timer.textContent = formatTime(0);
-  stopTimer();
+  if (levelSettings[numberOfPairs] !== undefined) {
+    timeLeft = levelSettings[numberOfPairs];
+  } else {
+    timeLeft = 60;
+  }
+
+  timer.textContent = formatTime(timeLeft);
 
   setGridColumns(numberOfPairs);
 
@@ -225,23 +271,9 @@ async function createGame(numberOfPairs) {
 
   const shuffleCards = shuffleArray([...cardsApi]);
   const selectedCards = shuffleCards.slice(0, numberOfPairs);
-
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
-}
-
-function showWinner() {
-  const movesText = moves.textContent;
-  const timerText = timer.textContent;
-
-  const winnerMoves = winner.querySelector(".winner-moves");
-  const winnerTime = winner.querySelector(".winner-time");
-
-  if (winnerMoves) winnerMoves.textContent = movesText;
-  if (winnerTime) winnerTime.textContent = timerText;
-
-  winner.style.display = "flex";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -262,8 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  moves.textContent = `Reveals: 0`;
-  timer.textContent = formatTime(0);
   createGame(currentPairs);
 });
 
