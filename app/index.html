@@ -18,19 +18,21 @@
 
     <main class="game wrap">
       <div class="controls">
-        <button class="button">
-          <span class="button-text">Restart</span>
-        </button>
+        <div class="controls-main">
+          <button class="button">
+            <span class="button-text">Restart</span>
+          </button>
 
-        <select class="level-select">
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
+          <div class="state">
+            <div class="moves">Reveals: 0</div>
+            <div class="timer">Time: 00:00</div>
+          </div>
+        </div>
 
-        <div class="state">
-          <div class="moves">Reveals: 0</div>
-          <div class="timer">Time: 00:00</div>
+        <div class="levels">
+          <button class="level-btn active" data-pairs="6">Level 1</button>
+          <button class="level-btn" data-pairs="8">Level 2</button>
+          <button class="level-btn" data-pairs="10">Level 3</button>
         </div>
       </div>
 

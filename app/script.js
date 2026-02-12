@@ -3,15 +3,10 @@ const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
 const buttons = document.querySelectorAll(".button");
-const levelSelect = document.querySelector(".level-select");
+const levelButtons = document.querySelectorAll(".level-btn");
 
 const defaultNumberOfPairs = 6;
-const levels = {
-  easy: 6,
-  medium: 8,
-  hard: 10,
-};
-let currentLevel = "easy";
+let currentPairs = defaultNumberOfPairs;
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
@@ -172,8 +167,8 @@ function resetBoard() {
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
   let columns;
 
-  if (numberOfPairs <= 6) columns = 4;
-  else if (numberOfPairs <= 9) columns = 3;
+  if (numberOfPairs <= 6) columns = 3;
+  else if (numberOfPairs <= 8) columns = 4;
   else if (numberOfPairs <= 10) columns = 5;
   else columns = 6;
 
@@ -249,30 +244,29 @@ function showWinner() {
   winner.style.display = "flex";
 }
 
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    createGame(levels[currentLevel]);
-  });
-});
-
-function getCurrentPairs() {
-  if (gameCards.length > 0) {
-    return gameCards.length / 2;
-  }
-  return defaultNumberOfPairs;
-}
-
-window.addEventListener("resize", () => {
-  setGridColumns(getCurrentPairs());
-});
-
 document.addEventListener("DOMContentLoaded", () => {
+  levelButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentPairs = parseInt(btn.dataset.pairs, 10);
+
+      levelButtons.forEach((level) => level.classList.remove("active"));
+      btn.classList.add("active");
+
+      createGame(currentPairs);
+    });
+  });
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      createGame(currentPairs);
+    });
+  });
+
   moves.textContent = `Reveals: 0`;
   timer.textContent = formatTime(0);
-  createGame(levels[currentLevel]);
+  createGame(currentPairs);
 });
 
-levelSelect.addEventListener("change", (event) => {
-  currentLevel = event.target.value;
-  createGame(levels[currentLevel]);
+window.addEventListener("resize", () => {
+  setGridColumns(currentPairs);
 });

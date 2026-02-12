@@ -63,11 +63,50 @@ a:hover {
 
 .controls {
   display: flex;
-  align-items: center;
-  margin-bottom: 2em;
-  flex-wrap: wrap;
-  gap: 30px;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
+  gap: 15px;
+  margin-bottom: 2em;
+}
+
+.controls-main {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 15px;
+}
+
+.levels {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.level-btn {
+  background: #10574d;
+  border: 2px solid #3a9377;
+  color: #54b999;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.level-btn:hover {
+  border-color: #54b999;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.level-btn.active {
+  background: #3a9377;
+  border-color: #3a9377;
+  color: #ffffff;
 }
 
 .button {
@@ -95,24 +134,7 @@ a:hover {
   transform: scale(1.05);
 }
 
-.level-select {
-  padding: 0.6rem 1rem;
-  border-radius: 5px;
-  border: none;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 1rem;
-  background-color: #10574d;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.level-select:focus {
-  outline: none;
-}
-
 .state {
-  margin-left: auto;
-  text-align: right;
   font-size: 18px;
   color: #54b999;
 }
@@ -123,6 +145,7 @@ a:hover {
   width: 100%;
   gap: 0.5em;
   margin: 0;
+  transition: all 0.5s ease;
 }
 
 .flip-card {
@@ -130,6 +153,7 @@ a:hover {
   aspect-ratio: 1 / 1;
   perspective: 1000px;
   cursor: pointer;
+  transition: all 0.5s ease;
 }
 
 .flip-card-inner {
@@ -225,6 +249,7 @@ footer {
   border: 10px solid #10574d;
   max-width: 600px;
   margin: 10%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .winner-title {
@@ -237,6 +262,25 @@ footer {
 .winner button {
   justify-self: center;
   margin-top: 25px;
+}
+
+@media (min-width: 601px) {
+  .controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .controls-main {
+    width: auto;
+    gap: 30px;
+  }
+
+  .levels {
+    width: auto;
+    justify-content: flex-end;
+  }
 }
 
 @media (min-width: 1000px) {
