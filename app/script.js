@@ -182,11 +182,16 @@ function resetBoard() {
 }
 
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
+  const isMobile = window.innerWidth <= 600;
   let columns;
 
+  if (isMobile) {
+    columns = 4;
+  } else {
   if (numberOfPairs <= 8) columns = 4;
   else if (numberOfPairs <= 10) columns = 5;
   else columns = 6;
+  }
 
   gameBoard.style.setProperty("--columns", columns);
 }
