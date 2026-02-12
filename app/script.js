@@ -167,8 +167,7 @@ function resetBoard() {
 function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
   let columns;
 
-  if (numberOfPairs <= 6) columns = 3;
-  else if (numberOfPairs <= 8) columns = 4;
+  if (numberOfPairs <= 8) columns = 4;
   else if (numberOfPairs <= 10) columns = 5;
   else columns = 6;
 
