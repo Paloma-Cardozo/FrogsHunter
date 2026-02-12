@@ -2,17 +2,24 @@ const gameBoard = document.querySelector(".container");
 const moves = document.querySelector(".moves");
 const timer = document.querySelector(".timer");
 const winner = document.querySelector(".winner");
+const timeout = document.querySelector(".timeout");
 const buttons = document.querySelectorAll(".button");
 const levelButtons = document.querySelectorAll(".level-btn");
-const countdownTimer = document.querySelector(".countdown-timer");
+
 
 const defaultNumberOfPairs = 6;
 let currentPairs = defaultNumberOfPairs;
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
+const levelSettings = {
+  6: 60,
+  8: 90,
+  10: 120
+};
+
 let gameCards = [];
-let elapsedTime = 0;
+let timeLeft = levelSettings[currentPairs];
 let moveCounter = 0;
 let timerInterval = null;
 let hasFlippedCard = false;
@@ -67,21 +74,31 @@ function formatTime(totalSeconds) {
     .padStart(2, "0");
   const secs = (totalSeconds % 60).toString().padStart(2, "0");
 
-  return `Time: ${mins}:${secs}`;
+  return `Time left: ${mins}:${secs}`;
 }
 
 function startTimer() {
   if (timerInterval) return;
 
   timerInterval = setInterval(() => {
-    elapsedTime++;
-    timer.textContent = formatTime(elapsedTime);
+    timeLeft--;
+    timer.textContent = formatTime(timeLeft);
+
+    if (timeLeft <= 0) {
+      stopTimer();
+      showTimeout();
+    }
   }, 1000);
 }
 
 function stopTimer() {
   clearInterval(timerInterval);
   timerInterval = null;
+}
+
+function showTimeout() {
+  lockBoard = true;
+  timeout.style.display = "flex";
 }
 
 function incrementMoves() {
@@ -128,7 +145,6 @@ function checkForMatch() {
 function disableCards() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
-
   lockBoard = true;
 
   setTimeout(() => {
@@ -209,13 +225,15 @@ function renderGameBoard() {
 async function createGame(numberOfPairs) {
   gameBoard.replaceChildren();
   winner.style.display = "none";
+  timeout.style.display = "none";
 
   gameCards = [];
-  elapsedTime = 0;
   moveCounter = 0;
 
+  timeLeft = levelSettings[numberOfPairs]; 
+
   moves.textContent = `Reveals: 0`;
-  timer.textContent = formatTime(0);
+  timer.textContent = formatTime(timeLeft);
   stopTimer();
 
   setGridColumns(numberOfPairs);
@@ -225,7 +243,6 @@ async function createGame(numberOfPairs) {
 
   const shuffleCards = shuffleArray([...cardsApi]);
   const selectedCards = shuffleCards.slice(0, numberOfPairs);
-
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
@@ -263,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   moves.textContent = `Reveals: 0`;
-  timer.textContent = formatTime(0);
+  timer.textContent = formatTime(timeLeft);
   createGame(currentPairs);
 });
 
