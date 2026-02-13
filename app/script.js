@@ -133,19 +133,18 @@ function checkForMatch() {
 }
 
 function disableCards() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
-
   lockBoard = true;
 
-  setTimeout(() => {
-    firstCard.style.transform = "scale(0.5) rotateY(180deg)";
-    secondCard.style.transform = "scale(0.5) rotateY(180deg)";
-    firstCard.style.opacity = "0";
-    secondCard.style.opacity = "0";
+  const handleTransitionEnd = (e) => {
+    if (e.propertyName !== "transform") return;
+
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+
+    secondCard.removeEventListener("transitionend", handleTransitionEnd);
 
     const matchedCards = document.querySelectorAll(
-      ".flip-card-inner.matched",
+      ".flip-card-inner.matched"
     ).length;
 
     if (matchedCards === gameCards.length) {
@@ -154,8 +153,11 @@ function disableCards() {
     }
 
     resetBoard();
-  }, 800);
+  };
+
+  secondCard.addEventListener("transitionend", handleTransitionEnd);
 }
+
 
 function showWinner() {
   lockBoard = true;

@@ -162,7 +162,9 @@ a:hover {
 }
 
 @media (min-width: 600px) {
-  .container { grid-template-columns: repeat(var(--columns, 4), 1fr); }
+  .container {
+    grid-template-columns: repeat(var(--columns, 4), 1fr);
+  }
 }
 
 .flip-card {
@@ -178,8 +180,8 @@ a:hover {
   width: 100%;
   height: 100%;
   transition:
-    opacity 0.6s,
-    transform 0.6s;
+    transform 0.6s ease,
+    opacity 0.8s ease;
   transform-style: preserve-3d;
   border-radius: 5px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
@@ -201,7 +203,6 @@ a:hover {
   pointer-events: none;
   opacity: 0;
   transform: scale(0.5) rotateY(180deg);
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .flip-card-front,
