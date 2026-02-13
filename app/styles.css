@@ -199,9 +199,9 @@ a:hover {
 
 .flip-card-inner.matched {
   pointer-events: none;
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
+  opacity: 0;
+  transform: scale(0.5) rotateY(180deg);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .flip-card-front,
