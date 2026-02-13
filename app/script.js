@@ -144,7 +144,7 @@ function disableCards() {
     secondCard.removeEventListener("transitionend", handleTransitionEnd);
 
     const matchedCards = document.querySelectorAll(
-      ".flip-card-inner.matched"
+      ".flip-card-inner.matched",
     ).length;
 
     if (matchedCards === gameCards.length) {
@@ -157,7 +157,6 @@ function disableCards() {
 
   secondCard.addEventListener("transitionend", handleTransitionEnd);
 }
-
 
 function showWinner() {
   lockBoard = true;
@@ -172,9 +171,12 @@ function showWinner() {
 }
 
 function flipCard(card) {
-  if (lockBoard) return;
-  if (card === firstCard) return;
-  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+  if (
+    lockBoard ||
+    card === firstCard ||
+    card.classList.contains("flipped") ||
+    card.classList.contains("matched")
+  )
     return;
 
   revealCard(card);
@@ -295,5 +297,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   createGame(currentPairs);
 });
-
-
