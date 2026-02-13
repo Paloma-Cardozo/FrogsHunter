@@ -154,11 +154,15 @@ a:hover {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(var(--columns, 4), 1fr);
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   gap: 0.5em;
   margin: 0;
   transition: all 0.5s ease;
+}
+
+@media (min-width: 600px) {
+  .container { grid-template-columns: repeat(var(--columns, 4), 1fr); }
 }
 
 .flip-card {
