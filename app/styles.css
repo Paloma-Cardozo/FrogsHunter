@@ -1,3 +1,16 @@
+:root {
+  --background: #0e4b43;
+  --primary-color: #3a9377;
+  --secondary-color: #54b999;
+  --hover: #76e7c3;
+  --cover: #10574d;
+  --button: #cb6812;
+  --btn-cover: #fa8e35;
+  --card: #19996b;
+  --white: #ffffff;
+  --font: "Noto Sans", sans-serif;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,12 +18,12 @@
 }
 
 body {
-  background: #0e4b43;
-  font-family: "Noto Sans", sans-serif;
+  background: var(--background);
+  font-family: var(--font);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  color: #3a9377;
+  color: var(--primary-color);
 }
 
 header {
@@ -49,16 +62,16 @@ footer {
 
 .text {
   font-size: 20px;
-  color: #3a9377;
+  color: var(--primary-color);
 }
 
 a {
-  color: #54b999;
+  color: var(--secondary-color);
   text-decoration: none;
 }
 
 a:hover {
-  color: #76e7c3;
+  color: var(--hover);
 }
 
 .controls {
@@ -86,9 +99,9 @@ a:hover {
 }
 
 .level-btn {
-  background: #10574d;
-  border: 2px solid #3a9377;
-  color: #54b999;
+  background: var(--cover);
+  border: 2px solid var(--primary-color);
+  color: var(--secondary-color);
   padding: 0.4rem 0.8rem;
   border-radius: 5px;
   cursor: pointer;
@@ -98,15 +111,15 @@ a:hover {
 }
 
 .level-btn:hover {
-  border-color: #54b999;
-  color: #ffffff;
+  border-color: var(--secondary-color);
+  color: var(--white);
   transform: scale(1.05);
 }
 
 .level-btn.active {
-  background: #3a9377;
-  border-color: #3a9377;
-  color: #ffffff;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
 }
 
 .button {
@@ -115,8 +128,8 @@ a:hover {
   gap: 8px;
   flex-wrap: wrap;
   padding: 0.6rem 1.2rem;
-  background-color: #cb6812;
-  color: #ffffff;
+  background-color: var(--button);
+  color: var(--white);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -124,19 +137,19 @@ a:hover {
   font-weight: 600;
   text-transform: uppercase;
   justify-content: center;
-  font-family: "Noto Sans", sans-serif;
+  font-family: var(--font);
   transition: all 0.3s ease;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .button:hover {
-  background-color: #fa8e35;
+  background-color: var(--btn-cover);
   transform: scale(1.05);
 }
 
 .state {
   font-size: 18px;
-  color: #54b999;
+  color: var(--secondary-color);
 }
 
 .container {
@@ -200,7 +213,7 @@ a:hover {
 }
 
 .flip-card-front {
-  background-color: #19996b;
+  background-color: var(--card);
 }
 
 .flip-card-back {
@@ -234,7 +247,7 @@ footer {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #0e4b43;
+  background: var(--background);
   display: none;
   justify-content: center;
   align-items: center;
@@ -248,7 +261,7 @@ footer {
 .timeout-container {
   padding: 3rem;
   border-radius: 5px;
-  border: 10px solid #10574d;
+  border: 10px solid var(--cover);
   max-width: 600px;
   margin: 10%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -258,7 +271,7 @@ footer {
 .timeout-title {
   font-weight: 700;
   font-size: 2rem;
-  color: #54b999;
+  color: var(--secondary-color);
   margin-bottom: 20px;
 }
 
