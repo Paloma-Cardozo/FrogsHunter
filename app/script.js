@@ -9,7 +9,7 @@ const levelButtons = document.querySelectorAll(".level-btn");
 const levelSettings = {
   easy: { pairs: 6, time: 60, columns: 4 },
   medium: { pairs: 8, time: 90, columns: 4 },
-  hard: { pairs: 10, time: 120, columns: 4 },
+  hard: { pairs: 10, time: 120, columns: 5 },
 };
 
 let defaultLevel = "easy";

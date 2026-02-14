@@ -162,9 +162,12 @@ a:hover {
 }
 
 .level-easy .container,
-.level-medium .container,
-.level-hard .container {
+.level-medium .container {
   grid-template-columns: repeat(4, 1fr);
+}
+
+.level-hard .container {
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .flip-card {
@@ -313,6 +316,10 @@ footer {
 @media (max-width: 600px) {
   .container {
     gap: 0.2em;
+  }
+
+  .level-hard .container {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .wrap {
