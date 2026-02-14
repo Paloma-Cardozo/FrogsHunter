@@ -273,7 +273,7 @@ async function createGame(numberOfPairs) {
 
   setGridColumns(numberOfPairs);
 
-  const cardsApi = await fetchCards();
+  const cards = await fetchCards();
   if (cardsApi.length === 0) return;
 
   const shuffleCards = shuffleArray([...cardsApi]);
