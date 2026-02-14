@@ -6,24 +6,30 @@ const timeout = document.querySelector(".timeout");
 const buttons = document.querySelectorAll(".button");
 const levelButtons = document.querySelectorAll(".level-btn");
 
-const defaultNumberOfPairs = 6;
-let currentPairs = defaultNumberOfPairs;
+const levelSettings = {
+  easy: { pairs: 6, time: 60, columns: 4 },
+  medium: { pairs: 8, time: 90, columns: 4 },
+  hard: { pairs: 10, time: 120, columns: 5 },
+};
+
+let defaultLevel = "easy";
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
-const levelSettings = {
-  6: 60,
-  8: 90,
-  10: 120,
+const timerSettings = {
+  milliseconds: 1000,
+  updateFrequency: 250,
+  flipBackDelay: 1200,
+  matchedDelay: 800,
+  hiddenDelay: 400,
 };
 
 let gameCards = [];
-let timeLeft = levelSettings[defaultNumberOfPairs];
+let timeLeft = levelSettings[defaultLevel].time;
 let endTime = null;
 let moveCounter = 0;
 let timerInterval = null;
 
-let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard = null;
 let secondCard = null;
@@ -83,8 +89,6 @@ function stopTimer() {
 }
 
 function resetBoard() {
-  hasFlippedCard = false;
-  lockBoard = false;
   firstCard = null;
   secondCard = null;
 }
@@ -92,16 +96,21 @@ function resetBoard() {
 function showTimeout() {
   lockBoard = true;
   resetBoard();
+
   timeout.style.display = "flex";
+  timeout.setAttribute("aria-hidden", "false");
 }
 
 function startTimer() {
   if (timerInterval) return;
 
-  endTime = Date.now() + timeLeft * 1000;
+  endTime = Date.now() + timeLeft * timerSettings.milliseconds;
 
   timerInterval = setInterval(() => {
-    const remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+    const remaining = Math.max(
+      0,
+      Math.ceil((endTime - Date.now()) / timerSettings.milliseconds),
+    );
 
     timer.textContent = formatTime(remaining);
 
@@ -109,7 +118,7 @@ function startTimer() {
       stopTimer();
       showTimeout();
     }
-  }, 250);
+  }, timerSettings.updateFrequency);
 }
 
 function incrementMoves() {
@@ -126,24 +135,21 @@ function checkForMatch() {
   const isMatch = firstCard.dataset.name === secondCard.dataset.name;
 
   if (isMatch) {
-    disableCards();
+    lockBoard = true;
+
+    setTimeout(() => {
+      disableCards();
+    }, timerSettings.hiddenDelay);
   } else {
     unflipCards();
   }
 }
 
 function disableCards() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
-
-  lockBoard = true;
+  firstCard.classList.add("matched", "matched-anim");
+  secondCard.classList.add("matched", "matched-anim");
 
   setTimeout(() => {
-    firstCard.style.transform = "scale(0.5) rotateY(180deg)";
-    secondCard.style.transform = "scale(0.5) rotateY(180deg)";
-    firstCard.style.opacity = "0";
-    secondCard.style.opacity = "0";
-
     const matchedCards = document.querySelectorAll(
       ".flip-card-inner.matched",
     ).length;
@@ -154,7 +160,8 @@ function disableCards() {
     }
 
     resetBoard();
-  }, 800);
+    lockBoard = false;
+  }, timerSettings.matchedDelay);
 }
 
 function showWinner() {
@@ -167,20 +174,24 @@ function showWinner() {
   if (winnerTime) winnerTime.textContent = timer.textContent;
 
   winner.style.display = "flex";
+  winner.setAttribute("aria-hidden", "false");
 }
 
 function flipCard(card) {
-  if (lockBoard) return;
-  if (card === firstCard) return;
-  if (card.classList.contains("flipped") || card.classList.contains("matched"))
+  if (
+    lockBoard ||
+    card === firstCard ||
+    card.classList.contains("flipped") ||
+    card.classList.contains("matched")
+  ) {
     return;
+  }
 
   revealCard(card);
 
   if (!timerInterval) startTimer();
 
-  if (!hasFlippedCard) {
-    hasFlippedCard = true;
+  if (!firstCard) {
     firstCard = card;
 
     return;
@@ -198,17 +209,8 @@ function unflipCards() {
     secondCard.classList.remove("flipped");
 
     resetBoard();
-  }, 1200);
-}
-
-function setGridColumns(numberOfPairs = defaultNumberOfPairs) {
-  let columns;
-
-  if (numberOfPairs <= 8) columns = 4;
-  else if (numberOfPairs <= 10) columns = 5;
-  else columns = 6;
-
-  gameBoard.style.setProperty("--columns", columns);
+    lockBoard = false;
+  }, timerSettings.flipBackDelay);
 }
 
 function renderGameBoard() {
@@ -242,61 +244,86 @@ function renderGameBoard() {
   });
 }
 
-async function createGame(numberOfPairs) {
+function hideModals() {
+  winner.style.display = "none";
+  winner.setAttribute("aria-hidden", "true");
+
+  timeout.style.display = "none";
+  timeout.setAttribute("aria-hidden", "true");
+}
+
+async function createGame(level = defaultLevel) {
+  document.body.classList.remove("level-easy", "level-medium", "level-hard");
+  document.body.classList.add(`level-${level}`);
+
+  const config = levelSettings[level];
+
   gameBoard.replaceChildren();
 
   winner.style.display = "none";
+  winner.setAttribute("aria-hidden", "true");
+
   timeout.style.display = "none";
+  timeout.setAttribute("aria-hidden", "true");
 
   stopTimer();
   resetBoard();
+  lockBoard = true;
 
   moveCounter = 0;
   moves.textContent = `Reveals: 0`;
-
   gameCards = [];
 
-  if (levelSettings[numberOfPairs] !== undefined) {
-    timeLeft = levelSettings[numberOfPairs];
-  } else {
-    timeLeft = 60;
-  }
-
+  timeLeft = config.time;
   timer.textContent = formatTime(timeLeft);
-
-  setGridColumns(numberOfPairs);
 
   const cardsApi = await fetchCards();
   if (cardsApi.length === 0) return;
 
-  const shuffleCards = shuffleArray([...cardsApi]);
-  const selectedCards = shuffleCards.slice(0, numberOfPairs);
+  const shuffledCards = shuffleArray([...cardsApi]);
+  const selectedCards = shuffledCards.slice(0, config.pairs);
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
+  hideModals();
+  lockBoard = false;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function updateActiveLevel(selectedBtn) {
+  levelButtons.forEach((btn) => {
+    btn.classList.remove("active");
+    btn.setAttribute("aria-pressed", "false");
+  });
+
+  selectedBtn.classList.add("active");
+  selectedBtn.setAttribute("aria-pressed", "true");
+}
+
+function getCurrentLevel() {
+  const activeBtn = document.querySelector(".level-btn.active");
+
+  if (!activeBtn) {
+    return defaultLevel;
+  }
+
+  return activeBtn.dataset.level;
+}
+
+function initializeGame() {
   levelButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      currentPairs = parseInt(btn.dataset.pairs, 10);
-
-      levelButtons.forEach((level) => level.classList.remove("active"));
-      btn.classList.add("active");
-
-      createGame(currentPairs);
+      updateActiveLevel(btn);
+      createGame(btn.dataset.level);
     });
   });
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
-      createGame(currentPairs);
+      createGame(getCurrentLevel());
     });
   });
 
-  createGame(currentPairs);
-});
+  createGame(getCurrentLevel());
+}
 
-window.addEventListener("resize", () => {
-  setGridColumns(currentPairs);
-});
+document.addEventListener("DOMContentLoaded", initializeGame);
