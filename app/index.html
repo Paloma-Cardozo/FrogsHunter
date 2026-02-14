@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frog Hunter - memory game</title>
+    <link rel="icon" type="image/x-icon" href="Images/favicon.ico" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet" />
+  </head>
+
+  <body>
+    <header class="wrap">
+      <h1>Frog Hunter</h1>
+      <h2>Test Your Memory. Hunt the Frogs.</h2>
+    </header>
+
+    <main class="game wrap">
+      <div class="controls">
+        <div class="controls-main">
+          <button type="button" class="button restart-btn">
+            <span class="button-text">Restart</span>
+          </button>
+
+          <div class="state">
+            <div class="moves">Reveals: 0</div>
+            <div class="timer countdown-timer">Time left: 00:00</div>
+          </div>
+        </div>
+
+        <div class="levels" role="group" aria-label="Game levels">
+          <button
+            type="button"
+            class="level-btn active"
+            aria-pressed="true"
+            data-level="easy">
+            Level 1
+          </button>
+          <button type="button" class="level-btn" data-level="medium">
+            Level 2
+          </button>
+          <button type="button" class="level-btn" data-level="hard">
+            Level 3
+          </button>
+        </div>
+      </div>
+
+      <div class="container" role="grid" aria-label="Memory game board"></div>
+
+      <div class="winner" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="winner-container">
+          <img
+            src="Images/celebration.png"
+            alt="Frog celebration"
+            class="frog-icon" />
+
+          <p class="winner-title">You won!</p>
+          <p class="winner-moves"></p>
+          <p class="winner-time"></p>
+          <button type="button" class="button winner-btn">
+            <span class="button-text">Play again</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="timeout" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="timeout-container">
+          <img
+            src="Images/mind-blown.png"
+            alt="Frog mind blown"
+            class="frog-icon" />
+
+          <p class="timeout-title">Oops! Time’s Up</p>
+          <p class="timeout-text">So close!</p>
+          <button type="button" class="button timeout-btn">
+            <span class="button-text">Try again</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="wrap">
+      <div>
+        <p>
+          Stickers created by
+          <a
+            href="https://www.flaticon.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Flaticon"
+            >Flaticon</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

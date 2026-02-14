@@ -1,0 +1,88 @@
+{
+	"id": "338af7a0-f7ac-443c-8467-bd08da62647f",
+	"name": "Final project",
+	"timestamp": "2026-02-11T09:17:37.565Z",
+	"collection_id": "a697a91d-89c8-4bdc-8ecd-a77567afd725",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 0,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-02-11T09:17:36.938Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "1d4b3333-68f1-40dd-9bd7-f85011c16276",
+			"name": "http://localhost:3000/",
+			"url": "http://localhost:3000/",
+			"time": 37,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				37
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "7f62cc82-ee77-4fa2-b880-6c4f7f9118b7",
+			"name": "http://localhost:3000/cards",
+			"url": "http://localhost:3000/cards",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				12
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "11c00cf9-e8f2-4400-afdd-26fc75329495",
+			"name": "http://localhost:3000/card",
+			"url": "http://localhost:3000/card",
+			"time": 5,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				5
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 54,
+	"collection": {
+		"requests": [
+			{
+				"id": "1d4b3333-68f1-40dd-9bd7-f85011c16276",
+				"method": "GET"
+			},
+			{
+				"id": "7f62cc82-ee77-4fa2-b880-6c4f7f9118b7",
+				"method": "GET"
+			},
+			{
+				"id": "11c00cf9-e8f2-4400-afdd-26fc75329495",
+				"method": "GET"
+			}
+		]
+	}
+}
