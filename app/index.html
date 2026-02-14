@@ -20,7 +20,7 @@
     <main class="game wrap">
       <div class="controls">
         <div class="controls-main">
-          <button class="button restart-btn">
+          <button type="button" class="button restart-btn">
             <span class="button-text">Restart</span>
           </button>
 
@@ -30,16 +30,26 @@
           </div>
         </div>
 
-        <div class="levels">
-          <button class="level-btn active" data-level="easy">Level 1</button>
-          <button class="level-btn" data-level="medium">Level 2</button>
-          <button class="level-btn" data-level="hard">Level 3</button>
+        <div class="levels" role="group" aria-label="Game levels">
+          <button
+            type="button"
+            class="level-btn active"
+            aria-pressed="true"
+            data-level="easy">
+            Level 1
+          </button>
+          <button type="button" class="level-btn" data-level="medium">
+            Level 2
+          </button>
+          <button type="button" class="level-btn" data-level="hard">
+            Level 3
+          </button>
         </div>
       </div>
 
-      <div class="container"></div>
+      <div class="container" role="grid" aria-label="Memory game board"></div>
 
-      <div class="winner">
+      <div class="winner" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="winner-container">
           <img
             src="Images/celebration.png"
@@ -49,13 +59,13 @@
           <p class="winner-title">You won!</p>
           <p class="winner-moves"></p>
           <p class="winner-time"></p>
-          <button class="button winner-btn">
-            <span class="button-text">New game</span>
+          <button type="button" class="button winner-btn">
+            <span class="button-text">Play again</span>
           </button>
         </div>
       </div>
 
-      <div class="timeout">
+      <div class="timeout" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="timeout-container">
           <img
             src="Images/mind-blown.png"
@@ -64,12 +74,8 @@
 
           <p class="timeout-title">Oops! Time’s Up</p>
           <p class="timeout-text">So close!</p>
-          <p class="timeout-text">
-            You ran out of time before finding all the pairs.
-          </p>
-          <p class="timeout-text">Try again?</p>
-          <button class="button timeout-btn">
-            <span class="button-text">New game</span>
+          <button type="button" class="button timeout-btn">
+            <span class="button-text">Try again</span>
           </button>
         </div>
       </div>
@@ -79,7 +85,11 @@
       <div>
         <p>
           Stickers created by
-          <a href="https://www.flaticon.com" target="_blank" title="Flaticon"
+          <a
+            href="https://www.flaticon.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Flaticon"
             >Flaticon</a
           >
         </p>

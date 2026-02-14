@@ -13,7 +13,6 @@ const levelSettings = {
 };
 
 let defaultLevel = "easy";
-let currentLevel = defaultLevel;
 
 const cardFrontImageSrc = "Images/lotus-flower.png";
 
@@ -30,7 +29,6 @@ let endTime = null;
 let moveCounter = 0;
 let timerInterval = null;
 
-let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard = null;
 let secondCard = null;
@@ -90,7 +88,6 @@ function stopTimer() {
 }
 
 function resetBoard() {
-  hasFlippedCard = false;
   lockBoard = false;
   firstCard = null;
   secondCard = null;
@@ -100,6 +97,7 @@ function showTimeout() {
   lockBoard = true;
   resetBoard();
   timeout.style.display = "flex";
+  timeout.setAttribute("aria-hidden", "false");
 }
 
 function startTimer() {
@@ -177,6 +175,7 @@ function showWinner() {
   if (winnerTime) winnerTime.textContent = timer.textContent;
 
   winner.style.display = "flex";
+  winner.setAttribute("aria-hidden", "false");
 }
 
 function flipCard(card) {
@@ -189,8 +188,7 @@ function flipCard(card) {
 
   if (!timerInterval) startTimer();
 
-  if (!hasFlippedCard) {
-    hasFlippedCard = true;
+  if (!firstCard) {
     firstCard = card;
 
     return;
@@ -259,7 +257,10 @@ async function createGame(level = defaultLevel) {
   gameBoard.replaceChildren();
 
   winner.style.display = "none";
+  winner.setAttribute("aria-hidden", "true");
+
   timeout.style.display = "none";
+  timeout.setAttribute("aria-hidden", "true");
 
   stopTimer();
   resetBoard();
@@ -284,31 +285,45 @@ async function createGame(level = defaultLevel) {
   renderGameBoard();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function updateActiveLevel(selectedBtn) {
+  levelButtons.forEach((btn) => btn.classList.remove("active"));
+  selectedBtn.classList.add("active");
+}
+
+function getCurrentLevel() {
+  const activeBtn = document.querySelector(".level-btn.active");
+
+  if (!activeBtn) {
+    console.warn("No active level found. Falling back to default.");
+    return defaultLevel;
+  }
+
+  return activeBtn.dataset.level;
+}
+
+function initializeGame() {
   levelButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const selectedLevel = btn.dataset.level;
 
       if (!levelSettings[selectedLevel]) return;
 
-      currentLevel = selectedLevel;
-
-      levelButtons.forEach((level) => level.classList.remove("active"));
-      btn.classList.add("active");
-
-      createGame(currentLevel);
+      updateActiveLevel(btn);
+      createGame(selectedLevel);
     });
   });
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
-      createGame(currentLevel);
+      createGame(getCurrentLevel());
     });
   });
 
-  createGame(currentLevel);
-});
+  createGame(getCurrentLevel);
+}
+
+document.addEventListener("DOMContentLoaded", initializeGame);
 
 window.addEventListener("resize", () => {
-  setGridColumns(currentLevel);
+  setGridColumns(getCurrentLevel());
 });
