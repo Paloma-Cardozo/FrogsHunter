@@ -205,11 +205,19 @@ a:hover {
   transform: rotateY(180deg);
 }
 
-.flip-card-inner.matched {
+.flip-card-inner.matched-anim {
+  transform: rotateY(180deg) scale(0.5);
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   transition:
+    transform 0.8s ease,
     opacity 0.8s ease,
-    transform 0.8s ease;
+    visibility 0s linear 0.8s;
+}
+
+.flip-card-inner.matched {
+  pointer-events: none;
 }
 
 .flip-card-front,
@@ -246,14 +254,6 @@ a:hover {
 .frog-icon {
   width: 120px;
   height: auto;
-}
-
-.matched-anim {
-  transform: scale(0.5) rotateY(180deg);
-  opacity: 0;
-  transition:
-    transform 0.8s ease,
-    opacity 0.8s ease;
 }
 
 footer {

@@ -21,6 +21,7 @@ const timerSettings = {
   updateFrequency: 250,
   flipBackDelay: 1200,
   matchedDelay: 800,
+  hiddenDelay: 400,
 };
 
 let gameCards = [];
@@ -135,21 +136,21 @@ function checkForMatch() {
   const isMatch = firstCard.dataset.name === secondCard.dataset.name;
 
   if (isMatch) {
-    disableCards();
+    lockBoard = true;
+
+    setTimeout(() => {
+      disableCards();
+    }, timerSettings.hiddenDelay);
   } else {
     unflipCards();
   }
 }
 
 function disableCards() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
+  firstCard.classList.add("matched", "matched-anim");
+  secondCard.classList.add("matched", "matched-anim");
 
-  lockBoard = true;
-
-  const handleTransitionEnd = (event) => {
-    if (event.propertyName !== "transform") return;
-
+  setTimeout(() => {
     const matchedCards = document.querySelectorAll(
       ".flip-card-inner.matched",
     ).length;
@@ -160,13 +161,7 @@ function disableCards() {
     }
 
     resetBoard();
-    secondCard.removeEventListener("transitionend", handleTransitionEnd);
-  };
-
-  secondCard.addEventListener("transitionend", handleTransitionEnd);
-
-  firstCard.classList.add("matched-anim");
-  secondCard.classList.add("matched-anim");
+  }, timerSettings.matchedDelay);
 }
 
 function showWinner() {
