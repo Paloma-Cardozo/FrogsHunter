@@ -177,13 +177,13 @@ function flipCard(card) {
     card.classList.contains("flipped") ||
     card.classList.contains("matched")
   )
-  if (
-    lockBoard ||
-    card === firstCard ||
-    card.classList.contains("flipped") ||
-    card.classList.contains("matched")
-  )
-    return;
+    if (
+      lockBoard ||
+      card === firstCard ||
+      card.classList.contains("flipped") ||
+      card.classList.contains("matched")
+    )
+      return;
 
   revealCard(card);
 
@@ -275,7 +275,6 @@ async function createGame(numberOfPairs) {
 
   const cards = await fetchCards();
   if (cards.length === 0) return;
-
   const shuffleCards = shuffleArray([...cards]);
   const selectedCards = shuffleCards.slice(0, numberOfPairs);
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
