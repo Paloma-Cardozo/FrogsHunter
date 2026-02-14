@@ -96,6 +96,7 @@ function resetBoard() {
 function showTimeout() {
   lockBoard = true;
   resetBoard();
+
   timeout.style.display = "flex";
   timeout.setAttribute("aria-hidden", "false");
 }
@@ -146,11 +147,8 @@ function disableCards() {
 
   lockBoard = true;
 
-  setTimeout(() => {
-    firstCard.style.transform = "scale(0.5) rotateY(180deg)";
-    secondCard.style.transform = "scale(0.5) rotateY(180deg)";
-    firstCard.style.opacity = "0";
-    secondCard.style.opacity = "0";
+  const handleTransitionEnd = (event) => {
+    if (event.propertyName !== "transform") return;
 
     const matchedCards = document.querySelectorAll(
       ".flip-card-inner.matched",
@@ -162,7 +160,13 @@ function disableCards() {
     }
 
     resetBoard();
-  }, timerSettings.matchedDelay);
+    secondCard.removeEventListener("transitionend", handleTransitionEnd);
+  };
+
+  secondCard.addEventListener("transitionend", handleTransitionEnd);
+
+  firstCard.classList.add("matched-anim");
+  secondCard.classList.add("matched-anim");
 }
 
 function showWinner() {
@@ -209,17 +213,6 @@ function unflipCards() {
   }, timerSettings.flipBackDelay);
 }
 
-function setGridColumns(level = defaultLevel) {
-  const config = levelSettings[level];
-
-  if (!config) {
-    console.warn("Invalid level. Falling back to default.");
-    return setGridColumns(defaultLevel);
-  }
-
-  gameBoard.style.setProperty("--columns", config.columns);
-}
-
 function renderGameBoard() {
   gameCards.forEach((card) => {
     const cardElement = createElement("div", "flip-card");
@@ -251,7 +244,18 @@ function renderGameBoard() {
   });
 }
 
+function hideModals() {
+  winner.style.display = "none";
+  winner.setAttribute("aria-hidden", "true");
+
+  timeout.style.display = "none";
+  timeout.setAttribute("aria-hidden", "true");
+}
+
 async function createGame(level = defaultLevel) {
+  document.body.classList.remove("level-easy", "level-medium", "level-hard");
+  document.body.classList.add(`level-${level}`);
+
   const config = levelSettings[level];
 
   gameBoard.replaceChildren();
@@ -267,13 +271,10 @@ async function createGame(level = defaultLevel) {
 
   moveCounter = 0;
   moves.textContent = `Reveals: 0`;
-
   gameCards = [];
 
   timeLeft = config.time;
   timer.textContent = formatTime(timeLeft);
-
-  setGridColumns(level);
 
   const cardsApi = await fetchCards();
   if (cardsApi.length === 0) return;
@@ -283,18 +284,23 @@ async function createGame(level = defaultLevel) {
   gameCards = shuffleArray([...selectedCards, ...selectedCards]);
 
   renderGameBoard();
+  hideModals();
 }
 
 function updateActiveLevel(selectedBtn) {
-  levelButtons.forEach((btn) => btn.classList.remove("active"));
+  levelButtons.forEach((btn) => {
+    btn.classList.remove("active");
+    btn.setAttribute("aria-pressed", "false");
+  });
+
   selectedBtn.classList.add("active");
+  selectedBtn.setAttribute("aria-pressed", "true");
 }
 
 function getCurrentLevel() {
   const activeBtn = document.querySelector(".level-btn.active");
 
   if (!activeBtn) {
-    console.warn("No active level found. Falling back to default.");
     return defaultLevel;
   }
 
@@ -304,12 +310,8 @@ function getCurrentLevel() {
 function initializeGame() {
   levelButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const selectedLevel = btn.dataset.level;
-
-      if (!levelSettings[selectedLevel]) return;
-
       updateActiveLevel(btn);
-      createGame(selectedLevel);
+      createGame(btn.dataset.level);
     });
   });
 
@@ -319,11 +321,7 @@ function initializeGame() {
     });
   });
 
-  createGame(getCurrentLevel);
+  createGame(getCurrentLevel());
 }
 
 document.addEventListener("DOMContentLoaded", initializeGame);
-
-window.addEventListener("resize", () => {
-  setGridColumns(getCurrentLevel());
-});

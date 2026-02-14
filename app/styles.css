@@ -154,11 +154,23 @@ a:hover {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(var(--columns, 4), 1fr);
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   gap: 0.5em;
   margin: 0;
   transition: all 0.5s ease;
+}
+
+.level-easy .container {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.level-medium .container {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.level-hard .container {
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .flip-card {
@@ -236,6 +248,14 @@ a:hover {
   height: auto;
 }
 
+.matched-anim {
+  transform: scale(0.5) rotateY(180deg);
+  opacity: 0;
+  transition:
+    transform 0.8s ease,
+    opacity 0.8s ease;
+}
+
 footer {
   padding: 1em 0;
 }
@@ -281,7 +301,14 @@ footer {
   margin-top: 25px;
 }
 
-@media (min-width: 601px) {
+@media (max-width: 600px) {
+  .container {
+    gap: 0.3em;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 601px) and (max-width: 999px) {
   .controls {
     flex-direction: row;
     justify-content: space-between;
@@ -297,6 +324,10 @@ footer {
   .levels {
     width: auto;
     justify-content: flex-end;
+  }
+
+  .container {
+    gap: 0.5em;
   }
 }
 
