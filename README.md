@@ -180,7 +180,7 @@ The game will fetch card data from the running backend server.
 ```
 frog hunter/
 ├── postman/                                            # Postman tests, collection and API evidence
-  ├── collection/                                       # Exported Postman collection
+| ├── collection/                                       # Exported Postman collection
 │ ├── screenshots/                                      # Evidence of API responses and test results
 │ │   ├── body-preview.png
 │ │   └── test-results.png
