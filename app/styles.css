@@ -87,8 +87,8 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  gap: 15px;
+  width: auto;
+  gap: 30px;
 }
 
 .levels {
@@ -306,7 +306,7 @@ footer {
   }
 }
 
-@media (min-width: 601px) and (max-width: 999px) {
+@media (min-width: 601px) {
   .controls {
     flex-direction: row;
     justify-content: space-between;
@@ -342,20 +342,5 @@ footer {
 
   .container {
     gap: 0.5em;
-  }
-}
-
-@media (min-width: 1000px) {
-  .container {
-    gap: 1em;
-  }
-
-  .winner-container,
-  .timeout-container {
-    margin: 10% auto;
-  }
-
-  .level-hard .container {
-    grid-template-columns: repeat(5, 1fr);
   }
 }
