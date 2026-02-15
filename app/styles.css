@@ -354,4 +354,8 @@ footer {
   .timeout-container {
     margin: 10% auto;
   }
+
+  .level-hard .container {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
