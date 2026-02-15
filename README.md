@@ -148,7 +148,7 @@ The deployed version mirrors the local environment and includes:
 
 A QR code is included below for quick mobile access.
 
-<img src="app/Images/QR.jpeg" width="450" alt="QR Code">
+<img src="app/Images/QR.jpeg" width="300" alt="QR Code">
 
 ---
 
