@@ -39,7 +39,7 @@ The game logic is intentionally kept clear and predictable, focusing on state ma
 
 ## 🖼️ Screenshot of Gameplay
 
-![Frog Hunter gameplay](app/Images/Screenshot.png)
+<img src="app/Images/Screenshot.png" width="150" alt="Frog Hunter gameplay">
 
 ### 🖼️ Winner Modal
 
