@@ -39,15 +39,15 @@ The game logic is intentionally kept clear and predictable, focusing on state ma
 
 ## 🖼️ Screenshot of Gameplay
 
-![Frog Hunter gameplay](app/Images/Screenshot.png)
+<div align="center"><img src="app/Images/Screenshot.png" width="450" alt="Frog Hunter gameplay"></div>
 
 ### 🖼️ Winner Modal
 
-![Winner modal](app/Images/Winner-modal.png)
+<div align="center"><img src="app/Images/Winner-modal.png" width="450" alt="Winner modal"></div>
 
 ### 🖼️ Timeout Modal
 
-![Timeout modal](app/Images/Timeout-modal.png)
+<div align="center"><img src="app/Images/Timeout-modal.png" width="450" alt="Timeout modal"></div>
 
 ---
 
@@ -148,7 +148,7 @@ The deployed version mirrors the local environment and includes:
 
 A QR code is included below for quick mobile access.
 
-![QR Code](app/Images/QR.jpeg)
+<div align="center"><img src="app/Images/QR.jpeg" width="300" align="center" alt="QR Code"></div>
 
 ---
 
@@ -180,7 +180,7 @@ The game will fetch card data from the running backend server.
 ```
 frog hunter/
 ├── postman/                                            # Postman tests, collection and API evidence
-  ├── collection/                                       # Exported Postman collection
+| ├── collection/                                       # Exported Postman collection
 │ ├── screenshots/                                      # Evidence of API responses and test results
 │ │   ├── body-preview.png
 │ │   └── test-results.png
